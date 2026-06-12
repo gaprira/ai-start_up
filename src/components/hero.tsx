@@ -1,12 +1,19 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, FlaskConical } from 'lucide-react'
 import { useLang } from '@/lib/i18n'
 
 export function Hero() {
   const { t } = useLang()
+  const router = useRouter()
+
+  const handleTester = () => {
+    localStorage.setItem('testerMode', 'true')
+    router.push('/dashboard')
+  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -34,11 +41,10 @@ export function Hero() {
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
-          <Link href="#how-it-works">
-            <Button variant="ghost" size="lg" className="h-12 px-8 text-base text-muted-foreground hover:text-foreground rounded-xl">
-              {t.hero_how}
-            </Button>
-          </Link>
+          <Button variant="outline" size="lg" onClick={handleTester} className="h-12 px-8 text-base rounded-xl border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10 hover:text-yellow-300">
+            <FlaskConical className="mr-2 h-4 w-4" />
+            Tester Mode
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto animate-fade-in-up animate-delay-400">
