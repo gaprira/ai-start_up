@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { getAuth } from '@clerk/nextjs/server'
 import { getOpenAI, GENERATION_PROMPT, AI_MODEL } from '@/lib/openai'
-import { prisma } from '@/lib/prisma'
+import { getDb } from '@/lib/prisma'
 import { PLAN_FEATURES } from '@/lib/stripe'
 
 function generateMockIdeas(interests: string, skills: string, industry: string, budget: string, audience: string) {
@@ -222,12 +222,12 @@ export async function POST(req: Request) {
       )
     }
 
-    let user = await prisma().user.findUnique({
+    let user = await (await getDb()).user.findUnique({
       where: { clerkId: userId },
     })
 
     if (!user) {
-      user = await prisma().user.create({
+      user = await (await getDb()).user.create({
         data: {
           clerkId: userId,
           email: 'user@example.com',
@@ -237,7 +237,7 @@ export async function POST(req: Request) {
     }
 
     if (user.plan === 'FREE') {
-      const genCount = await prisma().generation.count({ where: { userId: user.id } })
+      const genCount = await (await getDb()).generation.count({ where: { userId: user.id } })
       if (genCount >= 3) {
         return NextResponse.json(
           { error: 'Free plan limit reached (3 generations). Upgrade to Pro for unlimited.' },
@@ -378,7 +378,7 @@ export async function POST(req: Request) {
       return filtered
     })
 
-    const generation = await prisma().generation.create({
+    const generation = await (await getDb()).generation.create({
       data: {
         userId: user.id,
         interests,

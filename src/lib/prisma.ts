@@ -4,8 +4,9 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-export function prisma() {
+export async function getDb(): Promise<PrismaClient> {
   if (globalForPrisma.prisma) return globalForPrisma.prisma
-  globalForPrisma.prisma = new PrismaClient()
+  const { PrismaClient: PC } = await import('@prisma/client')
+  globalForPrisma.prisma = new PC()
   return globalForPrisma.prisma
 }

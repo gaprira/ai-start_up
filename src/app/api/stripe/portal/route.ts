@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { getAuth } from '@clerk/nextjs/server'
 import { stripe } from '@/lib/stripe'
-import { prisma } from '@/lib/prisma'
+import { getDb } from '@/lib/prisma'
 
 export async function POST(req: Request) {
   try {
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const user = await prisma().user.findUnique({
+    const user = await (await getDb()).user.findUnique({
       where: { clerkId: userId },
     })
 
