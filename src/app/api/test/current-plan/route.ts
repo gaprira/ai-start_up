@@ -12,7 +12,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ plan: 'FREE' })
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma().user.findUnique({
       where: { clerkId: userId },
       select: { plan: true },
     })

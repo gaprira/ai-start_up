@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma().user.findUnique({
       where: { clerkId: userId },
     })
 

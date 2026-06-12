@@ -4,10 +4,7 @@ import { NextResponse } from 'next/server'
 import { getAuth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request) {
   try {
     const { userId } = getAuth(req as any)
     
@@ -18,7 +15,7 @@ export async function GET(
       )
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma().user.findUnique({
       where: { clerkId: userId },
     })
 
@@ -29,26 +26,27 @@ export async function GET(
       )
     }
 
-    const generation = await prisma.generation.findUnique({
-      where: { id: params.id },
+    const generations = await prisma().generation.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        interests: true,
+        createdAt: true,
+        scores: true,
+      },
     })
 
-    if (!generation || generation.userId !== user.id) {
-      return NextResponse.json(
-        { error: 'Generation not found' },
-        { status: 404 }
-      )
-    }
+    const parsedGenerations = generations.map(gen => ({
+      ...gen,
+      scores: JSON.parse(gen.scores),
+    }))
 
-    return NextResponse.json({
-      ...generation,
-      ideas: JSON.parse(generation.ideas),
-      scores: JSON.parse(generation.scores),
-    })
+    return NextResponse.json(parsedGenerations)
   } catch (error) {
-    console.error('Fetch generation error:', error)
+    console.error('Fetch generations error:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch generation' },
+      { error: 'Failed to fetch generations' },
       { status: 500 }
     )
   }

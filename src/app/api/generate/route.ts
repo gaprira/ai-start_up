@@ -222,12 +222,12 @@ export async function POST(req: Request) {
       )
     }
 
-    let user = await prisma.user.findUnique({
+    let user = await prisma().user.findUnique({
       where: { clerkId: userId },
     })
 
     if (!user) {
-      user = await prisma.user.create({
+      user = await prisma().user.create({
         data: {
           clerkId: userId,
           email: 'user@example.com',
@@ -237,7 +237,7 @@ export async function POST(req: Request) {
     }
 
     if (user.plan === 'FREE') {
-      const genCount = await prisma.generation.count({ where: { userId: user.id } })
+      const genCount = await prisma().generation.count({ where: { userId: user.id } })
       if (genCount >= 3) {
         return NextResponse.json(
           { error: 'Free plan limit reached (3 generations). Upgrade to Pro for unlimited.' },
@@ -378,7 +378,7 @@ export async function POST(req: Request) {
       return filtered
     })
 
-    const generation = await prisma.generation.create({
+    const generation = await prisma().generation.create({
       data: {
         userId: user.id,
         interests,

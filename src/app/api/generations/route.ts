@@ -15,7 +15,7 @@ export async function GET(req: Request) {
       )
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma().user.findUnique({
       where: { clerkId: userId },
     })
 
@@ -26,7 +26,7 @@ export async function GET(req: Request) {
       )
     }
 
-    const generations = await prisma.generation.findMany({
+    const generations = await prisma().generation.findMany({
       where: { userId: user.id },
       orderBy: { createdAt: 'desc' },
       select: {

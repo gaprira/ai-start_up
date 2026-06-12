@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
     const { priceId } = await req.json()
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma().user.findUnique({
       where: { clerkId: userId },
     })
 
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
       })
       customerId = customer.id
 
-      await prisma.user.update({
+      await prisma().user.update({
         where: { id: user.id },
         data: { stripeCustomerId: customerId },
       })

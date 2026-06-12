@@ -39,7 +39,7 @@ export async function POST(req: Request) {
         const subscription = event.data.object as Stripe.Subscription
         const customerId = subscription.customer as string
 
-        const user = await prisma.user.findFirst({
+        const user = await prisma().user.findFirst({
           where: { stripeCustomerId: customerId },
         })
 
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
           plan = 'FOUNDER'
         }
 
-        await prisma.subscription.upsert({
+        await prisma().subscription.upsert({
           where: { stripeSubscriptionId: subscription.id },
           create: {
             userId: user.id,
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
           },
         })
 
-        await prisma.user.update({
+        await prisma().user.update({
           where: { id: user.id },
           data: { plan },
         })
@@ -86,16 +86,16 @@ export async function POST(req: Request) {
         const subscription = event.data.object as Stripe.Subscription
         const customerId = subscription.customer as string
 
-        const user = await prisma.user.findFirst({
+        const user = await prisma().user.findFirst({
           where: { stripeCustomerId: customerId },
         })
 
         if (user) {
-          await prisma.subscription.delete({
+          await prisma().subscription.delete({
             where: { stripeSubscriptionId: subscription.id },
           })
 
-          await prisma.user.update({
+          await prisma().user.update({
             where: { id: user.id },
             data: { plan: 'FREE' },
           })

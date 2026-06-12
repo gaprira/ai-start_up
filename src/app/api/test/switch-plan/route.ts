@@ -18,12 +18,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid plan' }, { status: 400 })
     }
 
-    let user = await prisma.user.findUnique({
+    let user = await prisma().user.findUnique({
       where: { clerkId: userId },
     })
 
     if (!user) {
-      user = await prisma.user.create({
+      user = await prisma().user.create({
         data: {
           clerkId: userId,
           email: 'user@example.com',
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         },
       })
     } else {
-      user = await prisma.user.update({
+      user = await prisma().user.update({
         where: { id: user.id },
         data: { plan },
       })

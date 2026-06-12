@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       case 'user.created': {
         const { id, email_addresses, first_name, last_name, image_url } = data
         
-        await prisma.user.create({
+        await prisma().user.create({
           data: {
             clerkId: id,
             email: email_addresses[0]?.email_address || '',
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
       case 'user.updated': {
         const { id, email_addresses, first_name, last_name, image_url } = data
         
-        await prisma.user.update({
+        await prisma().user.update({
           where: { clerkId: id },
           data: {
             email: email_addresses[0]?.email_address || undefined,
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
       case 'user.deleted': {
         const { id } = data
         
-        await prisma.user.delete({
+        await prisma().user.delete({
           where: { clerkId: id },
         })
         break
