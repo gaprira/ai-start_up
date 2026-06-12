@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  clerkId       String    @unique
+  email         String    @unique
+  name          String?
+  avatar        String?
+  plan          String    @default("FREE")
+  stripeCustomerId String? @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  generations   Generation[]
+  subscriptions Subscription[]
+
+  @@map("users")
+}
+
+model Generation {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  interests     String
+  skills        String
+  industry      String
+  budget        String
+  audience      String
+  
+  ideas         String
+  scores        String
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("generations")
+}
+
+model Subscription {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  stripeSubscriptionId String @unique
+  stripePriceId     String
+  status            String
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("subscriptions")
+}
