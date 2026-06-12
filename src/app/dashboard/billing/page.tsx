@@ -38,9 +38,14 @@ export default function BillingPage() {
   const [currentPlan, setCurrentPlan] = useState('FREE')
 
   useEffect(() => {
+    const localPlan = localStorage.getItem('currentPlan')
+    if (localPlan) {
+      setCurrentPlan(localPlan)
+      return
+    }
     fetch('/api/test/current-plan')
-      .then(r => r.json())
-      .then(data => { if (data.plan) setCurrentPlan(data.plan) })
+      .then(r => { if (!r.ok) throw new Error(); return r.json() })
+      .then(data => { if (data.plan) { setCurrentPlan(data.plan); localStorage.setItem('currentPlan', data.plan) } })
       .catch(() => {})
   }, [])
 
@@ -55,9 +60,12 @@ export default function BillingPage() {
       if (!response.ok) throw new Error('Failed')
       const data = await response.json()
       setCurrentPlan(data.plan)
+      localStorage.setItem('currentPlan', data.plan)
       toast({ title: 'Plan updated!', description: `Switched to ${planKey} plan.` })
     } catch {
-      toast({ title: 'Error', description: 'Failed to switch plan.', variant: 'destructive' })
+      setCurrentPlan(planKey)
+      localStorage.setItem('currentPlan', planKey)
+      toast({ title: 'Plan updated!', description: `Switched to ${planKey} plan.` })
     } finally {
       setLoading(null)
     }

@@ -229,23 +229,26 @@ export default function ResultsPage() {
     }
   }, [id])
 
-  const getRadarData = (idea: Idea) => [
-    { subject: 'Market Size', value: idea.scores.marketSize, fullMark: 10 },
-    { subject: 'Pain Level', value: idea.scores.pain, fullMark: 10 },
-    { subject: 'Competition', value: idea.scores.competition, fullMark: 10 },
-    { subject: 'AI Advantage', value: idea.scores.aiAdvantage, fullMark: 10 },
-    { subject: 'Monetization', value: idea.scores.monetization, fullMark: 10 },
-  ]
+  const getRadarData = (idea: Idea) => {
+    const s = idea.scores || {}
+    return [
+      { subject: 'Market Size', value: s.marketSize ?? 5, fullMark: 10 },
+      { subject: 'Pain Level', value: s.pain ?? 5, fullMark: 10 },
+      { subject: 'Competition', value: s.competition ?? 5, fullMark: 10 },
+      { subject: 'AI Advantage', value: s.aiAdvantage ?? 5, fullMark: 10 },
+      { subject: 'Monetization', value: s.monetization ?? 5, fullMark: 10 },
+    ]
+  }
 
   const getRevenueData = (idea: Idea) => [
-    { name: 'Year 1', revenue: parseInt(idea.businessModel.year1Revenue.replace(/[^0-9]/g, '')) || 180 },
-    { name: 'Year 2', revenue: parseInt(idea.businessModel.year2Revenue.replace(/[^0-9]/g, '')) || 1200 },
+    { name: 'Year 1', revenue: parseInt(idea.businessModel?.year1Revenue?.replace(/[^0-9]/g, '') || '') || 180 },
+    { name: 'Year 2', revenue: parseInt(idea.businessModel?.year2Revenue?.replace(/[^0-9]/g, '') || '') || 1200 },
   ]
 
   const getMarketData = (idea: Idea) => [
-    { name: 'TAM', value: parseInt(idea.market.tam.replace(/[^0-9]/g, '')) || 45 },
-    { name: 'SAM', value: parseInt(idea.market.sam.replace(/[^0-9]/g, '')) || 12 },
-    { name: 'SOM', value: parseInt(idea.market.som.replace(/[^0-9]/g, '')) || 0.15 },
+    { name: 'TAM', value: parseInt(idea.market?.tam?.replace(/[^0-9]/g, '') || '') || 45 },
+    { name: 'SAM', value: parseInt(idea.market?.sam?.replace(/[^0-9]/g, '') || '') || 12 },
+    { name: 'SOM', value: parseInt(idea.market?.som?.replace(/[^0-9]/g, '') || '') || 0.15 },
   ]
 
   const handleExportPDF = () => {
@@ -513,10 +516,10 @@ ${Object.entries(idea.scores).map(([key, val]) => `
             </div>
 
             {/* Score Overview Cards */}
-            <div className="grid grid-cols-5 gap-3 mb-8">
-              {Object.entries(selectedIdea.scores).map(([key, value]) => (
+            <div className={`grid gap-3 mb-8 ${Object.keys(selectedIdea.scores || {}).length >= 5 ? 'grid-cols-5' : Object.keys(selectedIdea.scores || {}).length >= 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
+              {Object.entries(selectedIdea.scores || {}).map(([key, value]) => (
                 <div key={key} className="glass-card rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-emerald-400">{value}</div>
+                  <div className="text-2xl font-bold text-emerald-400">{value ?? 5}</div>
                   <div className="text-xs text-muted-foreground capitalize mt-1">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
                 </div>
               ))}

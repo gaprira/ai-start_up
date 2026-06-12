@@ -20,12 +20,27 @@ export default function GenerationsPage() {
 
   useEffect(() => {
     fetch('/api/generations')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error()
+        return res.json()
+      })
       .then(data => {
-        setGenerations(data)
+        if (Array.isArray(data) && data.length > 0) {
+          setGenerations(data)
+          localStorage.setItem('generations', JSON.stringify(data))
+        } else {
+          const cached = localStorage.getItem('generations')
+          if (cached) setGenerations(JSON.parse(cached))
+        }
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch(() => {
+        const cached = localStorage.getItem('generations')
+        if (cached) {
+          try { setGenerations(JSON.parse(cached)) } catch {}
+        }
+        setLoading(false)
+      })
   }, [])
 
   if (loading) {

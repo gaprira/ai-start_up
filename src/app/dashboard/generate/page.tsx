@@ -41,6 +41,15 @@ export default function GeneratePage() {
       }
       const data = await response.json()
       localStorage.setItem('lastIdeas', JSON.stringify(data.ideas))
+      const gen = {
+        id: data.id,
+        interests: formData.interests,
+        createdAt: new Date().toISOString(),
+        scores: (data.ideas || []).map((i: any) => ({ name: i.name, score: i.totalScore })),
+      }
+      const gens = JSON.parse(localStorage.getItem('generations') || '[]')
+      gens.unshift(gen)
+      localStorage.setItem('generations', JSON.stringify(gens.slice(0, 20)))
       toast({ title: 'Ideas Generated!', description: 'Your startup ideas are ready.' })
       router.push(`/dashboard/generate/results?id=${data.id}`)
     } catch (error) {
