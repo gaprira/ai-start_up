@@ -173,16 +173,23 @@ export default function ResultsPage() {
   const [planName, setPlanName] = useState('FREE')
 
   useEffect(() => {
-    fetch('/api/test/current-plan')
-      .then(r => r.json())
-      .then(data => {
-        if (data.plan) {
-          setPlanName(data.plan)
-          const features = PLAN_FEATURES[data.plan as keyof typeof PLAN_FEATURES] || PLAN_FEATURES.FREE
-          setPlanFeatures(features)
-        }
-      })
-      .catch(() => {})
+    const localPlan = localStorage.getItem('currentPlan')
+    if (localPlan) {
+      setPlanName(localPlan)
+      const features = PLAN_FEATURES[localPlan as keyof typeof PLAN_FEATURES] || PLAN_FEATURES.FREE
+      setPlanFeatures(features)
+    } else {
+      fetch('/api/test/current-plan')
+        .then(r => { if (!r.ok) throw new Error(); return r.json() })
+        .then(data => {
+          if (data.plan) {
+            setPlanName(data.plan)
+            const features = PLAN_FEATURES[data.plan as keyof typeof PLAN_FEATURES] || PLAN_FEATURES.FREE
+            setPlanFeatures(features)
+          }
+        })
+        .catch(() => {})
+    }
 
     if (id) {
       fetch(`/api/generations/${id}`)

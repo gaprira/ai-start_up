@@ -16,13 +16,18 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetch('/api/generations')
-      .then(r => r.json())
+      .then(r => { if (!r.ok) throw new Error(); return r.json() })
       .then(data => { if (Array.isArray(data)) setGenCount(data.length) })
       .catch(() => {})
-    fetch('/api/test/current-plan')
-      .then(r => r.json())
-      .then(data => { if (data.plan) setPlan(data.plan) })
-      .catch(() => {})
+    const localPlan = localStorage.getItem('currentPlan')
+    if (localPlan) {
+      setPlan(localPlan)
+    } else {
+      fetch('/api/test/current-plan')
+        .then(r => { if (!r.ok) throw new Error(); return r.json() })
+        .then(data => { if (data.plan) { setPlan(data.plan); localStorage.setItem('currentPlan', data.plan) } })
+        .catch(() => {})
+    }
   }, [])
 
   return (
