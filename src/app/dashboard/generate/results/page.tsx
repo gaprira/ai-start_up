@@ -186,7 +186,10 @@ export default function ResultsPage() {
 
     if (id) {
       fetch(`/api/generations/${id}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error('Not found')
+          return res.json()
+        })
         .then(data => {
           const ideasList = Array.isArray(data.ideas) ? data.ideas : []
           setIdeas(ideasList)
