@@ -30,9 +30,13 @@ export default function GeneratePage() {
     e.preventDefault()
     setIsGenerating(true)
     try {
+      const isTester = localStorage.getItem('testerMode') === 'true'
       const response = await fetch('/api/generate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(isTester ? { 'x-tester-mode': 'true' } : {}),
+        },
         body: JSON.stringify(formData),
       })
       if (!response.ok) {

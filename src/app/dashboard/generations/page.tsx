@@ -19,7 +19,10 @@ export default function GenerationsPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/generations')
+    const isTester = localStorage.getItem('testerMode') === 'true'
+    fetch('/api/generations', {
+      headers: isTester ? { 'x-tester-mode': 'true' } : {},
+    })
       .then(res => {
         if (!res.ok) throw new Error()
         return res.json()

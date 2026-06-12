@@ -46,10 +46,14 @@ export default function SettingsPage() {
 
   const handleSwitchPlan = async (planKey: string) => {
     setLoading(planKey)
+    const isTester = localStorage.getItem('testerMode') === 'true'
     try {
       const response = await fetch('/api/test/switch-plan', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(isTester ? { 'x-tester-mode': 'true' } : {}),
+        },
         body: JSON.stringify({ plan: planKey }),
       })
       if (!response.ok) throw new Error('Failed')

@@ -359,27 +359,49 @@ function PitchDeckContent() {
   const [hasAccess, setHasAccess] = useState(false)
 
   useEffect(() => {
-    fetch('/api/test/current-plan')
-      .then(r => r.json())
-      .then(data => {
-        if (data.plan) {
-          const features = PLAN_FEATURES[data.plan as keyof typeof PLAN_FEATURES] || PLAN_FEATURES.FREE
-          setHasAccess(features.showLaunchPlan)
-        }
-      })
-      .catch(() => {})
+    const localPlan = localStorage.getItem('currentPlan')
+    if (localPlan) {
+      const features = PLAN_FEATURES[localPlan as keyof typeof PLAN_FEATURES] || PLAN_FEATURES.FREE
+      setHasAccess(features.showLaunchPlan)
+    } else {
+      fetch('/api/test/current-plan')
+        .then(r => { if (!r.ok) throw new Error(); return r.json() })
+        .then(data => {
+          if (data.plan) {
+            const features = PLAN_FEATURES[data.plan as keyof typeof PLAN_FEATURES] || PLAN_FEATURES.FREE
+            setHasAccess(features.showLaunchPlan)
+          }
+        })
+        .catch(() => {})
+    }
 
     if (ideaId) {
       fetch(`/api/generations/${ideaId}`)
-        .then(res => res.json())
+        .then(res => { if (!res.ok) throw new Error(); return res.json() })
         .then(data => {
           if (data.ideas && data.ideas.length > 0) {
             setIdea(data.ideas[0])
           }
           setLoading(false)
         })
-        .catch(() => setLoading(false))
+        .catch(() => {
+          const cached = localStorage.getItem('lastIdeas')
+          if (cached) {
+            try {
+              const ideas = JSON.parse(cached)
+              if (ideas.length > 0) setIdea(ideas[0])
+            } catch {}
+          }
+          setLoading(false)
+        })
     } else {
+      const cached = localStorage.getItem('lastIdeas')
+      if (cached) {
+        try {
+          const ideas = JSON.parse(cached)
+          if (ideas.length > 0) setIdea(ideas[0])
+        } catch {}
+      }
       setLoading(false)
     }
   }, [ideaId])
