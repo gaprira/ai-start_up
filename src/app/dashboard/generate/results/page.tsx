@@ -195,7 +195,27 @@ export default function ResultsPage() {
           }
           setLoading(false)
         })
-        .catch(() => setLoading(false))
+        .catch(() => {
+          const cached = localStorage.getItem('lastIdeas')
+          if (cached) {
+            try {
+              const ideasList = JSON.parse(cached)
+              setIdeas(ideasList)
+              if (ideasList.length > 0) setSelectedIdea(ideasList[0])
+            } catch {}
+          }
+          setLoading(false)
+        })
+    } else {
+      const cached = localStorage.getItem('lastIdeas')
+      if (cached) {
+        try {
+          const ideasList = JSON.parse(cached)
+          setIdeas(ideasList)
+          if (ideasList.length > 0) setSelectedIdea(ideasList[0])
+        } catch {}
+      }
+      setLoading(false)
     }
   }, [id])
 

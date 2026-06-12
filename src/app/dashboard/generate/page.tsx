@@ -40,6 +40,7 @@ export default function GeneratePage() {
         throw new Error(data.error || 'Failed to generate ideas')
       }
       const data = await response.json()
+      localStorage.setItem('lastIdeas', JSON.stringify(data.ideas))
       toast({ title: 'Ideas Generated!', description: 'Your startup ideas are ready.' })
       router.push(`/dashboard/generate/results?id=${data.id}`)
     } catch (error) {
