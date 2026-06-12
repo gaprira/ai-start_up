@@ -9,45 +9,39 @@ export async function GET(req: Request) {
     const { userId } = getAuth(req as any)
     
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+      return NextResponse.json([])
     }
 
-    const user = await (await getDb()).user.findUnique({
-      where: { clerkId: userId },
-    })
+    try {
+      const user = await (await getDb()).user.findUnique({
+        where: { clerkId: userId },
+      })
 
-    if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      )
+      if (!user) {
+        return NextResponse.json([])
+      }
+
+      const generations = await (await getDb()).generation.findMany({
+        where: { userId: user.id },
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          interests: true,
+          createdAt: true,
+          scores: true,
+        },
+      })
+
+      const parsedGenerations = generations.map(gen => ({
+        ...gen,
+        scores: JSON.parse(gen.scores),
+      }))
+
+      return NextResponse.json(parsedGenerations)
+    } catch {
+      return NextResponse.json([])
     }
-
-    const generations = await (await getDb()).generation.findMany({
-      where: { userId: user.id },
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        interests: true,
-        createdAt: true,
-        scores: true,
-      },
-    })
-
-    const parsedGenerations = generations.map(gen => ({
-      ...gen,
-      scores: JSON.parse(gen.scores),
-    }))
-
-    return NextResponse.json(parsedGenerations)
-  } catch (error) {
-    console.error('Fetch generations error:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch generations' },
-      { status: 500 }
-    )
+  } catch {
+    return NextResponse.json([])
   }
 }

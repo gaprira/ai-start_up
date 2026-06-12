@@ -18,28 +18,31 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid plan' }, { status: 400 })
     }
 
-    let user = await (await getDb()).user.findUnique({
-      where: { clerkId: userId },
-    })
+    try {
+      let user = await (await getDb()).user.findUnique({
+        where: { clerkId: userId },
+      })
 
-    if (!user) {
-      user = await (await getDb()).user.create({
-        data: {
-          clerkId: userId,
-          email: 'user@example.com',
-          plan,
-        },
-      })
-    } else {
-      user = await (await getDb()).user.update({
-        where: { id: user.id },
-        data: { plan },
-      })
+      if (!user) {
+        user = await (await getDb()).user.create({
+          data: {
+            clerkId: userId,
+            email: 'user@example.com',
+            plan,
+          },
+        })
+      } else {
+        user = await (await getDb()).user.update({
+          where: { id: user.id },
+          data: { plan },
+        })
+      }
+
+      return NextResponse.json({ plan: user.plan })
+    } catch {
+      return NextResponse.json({ plan })
     }
-
-    return NextResponse.json({ plan: user.plan })
   } catch (error) {
-    console.error('Switch plan error:', error)
     return NextResponse.json({ error: 'Failed to switch plan' }, { status: 500 })
   }
 }

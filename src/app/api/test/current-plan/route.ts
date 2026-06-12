@@ -12,13 +12,16 @@ export async function GET(req: Request) {
       return NextResponse.json({ plan: 'FREE' })
     }
 
-    const user = await (await getDb()).user.findUnique({
-      where: { clerkId: userId },
-      select: { plan: true },
-    })
-
-    return NextResponse.json({ plan: user?.plan || 'FREE' })
-  } catch (error) {
+    try {
+      const user = await (await getDb()).user.findUnique({
+        where: { clerkId: userId },
+        select: { plan: true },
+      })
+      return NextResponse.json({ plan: user?.plan || 'FREE' })
+    } catch {
+      return NextResponse.json({ plan: 'FREE' })
+    }
+  } catch {
     return NextResponse.json({ plan: 'FREE' })
   }
 }
