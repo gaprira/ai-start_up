@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextResponse } from 'next/server'
 import { getAuth } from '@clerk/nextjs/server'
 import { getOpenAI, GENERATION_PROMPT, AI_MODEL } from '@/lib/openai'
