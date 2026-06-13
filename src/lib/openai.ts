@@ -4,8 +4,10 @@ let _openai: OpenAI | null = null
 
 export function getOpenAI(): OpenAI {
   if (!_openai) {
+    const apiKey = process.env.OPENROUTER_API_KEY
+    if (!apiKey) throw new Error('OPENROUTER_API_KEY environment variable is not set')
     _openai = new OpenAI({
-      apiKey: process.env.OPENROUTER_API_KEY || '',
+      apiKey,
       baseURL: 'https://openrouter.ai/api/v1',
       defaultHeaders: {
         'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',

@@ -6,6 +6,7 @@ export const startupInputSchema = z.object({
   industry: z.string().min(1, 'Please describe your industry knowledge'),
   budget: z.string().min(1, 'Please enter your available budget'),
   audience: z.string().min(1, 'Please describe your target audience'),
+  lang: z.enum(['en', 'ru']).optional().default('en'),
 })
 
 export type StartupInput = z.infer<typeof startupInputSchema>

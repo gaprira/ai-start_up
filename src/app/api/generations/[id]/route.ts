@@ -32,10 +32,15 @@ export async function GET(
         return NextResponse.json({ error: 'Generation not found' }, { status: 404 })
       }
 
+      let parsedIdeas: any[] = []
+      let parsedScores: any[] = []
+      try { parsedIdeas = JSON.parse(generation.ideas) } catch { parsedIdeas = [] }
+      try { parsedScores = JSON.parse(generation.scores) } catch { parsedScores = [] }
+
       return NextResponse.json({
         ...generation,
-        ideas: JSON.parse(generation.ideas),
-        scores: JSON.parse(generation.scores),
+        ideas: parsedIdeas,
+        scores: parsedScores,
       })
     } catch {
       return NextResponse.json({ error: 'Database unavailable' }, { status: 503 })

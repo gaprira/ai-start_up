@@ -7,7 +7,7 @@ export default function TermsPage() {
       <Navbar />
       <div className="pt-24 pb-12 max-w-4xl mx-auto px-6">
         <p className="text-xs font-medium text-emerald-400 tracking-widest uppercase mb-2">Legal</p>
-        <h1 className="text-4xl font-bold tracking-tight mb-6">Terms of Service</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6">Terms of Service</h1>
         <p className="text-sm text-muted-foreground mb-8">Last updated: June 2025</p>
         <div className="space-y-6 text-sm text-muted-foreground leading-relaxed">
           <section>

@@ -7,7 +7,7 @@ export default function AboutPage() {
       <Navbar />
       <div className="pt-24 pb-12 max-w-4xl mx-auto px-6">
         <p className="text-xs font-medium text-emerald-400 tracking-widest uppercase mb-2">Company</p>
-        <h1 className="text-4xl font-bold tracking-tight mb-6">About Us</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6">About Us</h1>
         <div className="space-y-6 text-muted-foreground">
           <p className="text-lg">
             We believe everyone deserves a shot at building a startup. Our mission is to democratize entrepreneurship by using AI to generate, analyze, and validate startup ideas in minutes.

@@ -51,15 +51,11 @@ export function Navbar() {
             {lang === 'en' ? 'RU' : 'EN'}
           </button>
           <div className="w-px h-6 bg-white/10 mx-1" />
-          <Link href="/sign-in">
-            <button className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-white/5">
-              {t.nav_signin}
-            </button>
+          <Link href="/sign-in" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-white/5">
+            {t.nav_signin}
           </Link>
-          <Link href="/sign-up">
-            <button className="h-9 px-5 text-sm font-semibold text-white rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:opacity-90 transition-opacity ml-1">
-              {t.nav_getstarted}
-            </button>
+          <Link href="/sign-up" className="h-9 px-5 text-sm font-semibold text-white rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:opacity-90 transition-opacity ml-1 inline-flex items-center">
+            {t.nav_getstarted}
           </Link>
         </div>
 
@@ -88,15 +84,11 @@ export function Navbar() {
             <Link href="/docs" className="block px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg transition-colors">
               {t.nav_docs}
             </Link>
-            <Link href="/sign-in" className="block">
-              <button className="w-full mt-2 h-10 px-4 text-sm text-muted-foreground hover:text-foreground border border-white/10 rounded-xl hover:bg-white/5 transition-colors">
-                {t.nav_signin}
-              </button>
+            <Link href="/sign-in" className="block w-full mt-2 h-10 px-4 text-sm text-muted-foreground hover:text-foreground border border-white/10 rounded-xl hover:bg-white/5 transition-colors text-center leading-10">
+              {t.nav_signin}
             </Link>
-            <Link href="/sign-up" className="block">
-              <button className="w-full mt-2 h-10 px-4 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:opacity-90 transition-opacity">
-                {t.nav_getstarted}
-              </button>
+            <Link href="/sign-up" className="block w-full mt-2 h-10 px-4 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:opacity-90 transition-opacity text-center leading-10">
+              {t.nav_getstarted}
             </Link>
           </div>
         </div>

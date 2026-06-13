@@ -7,7 +7,7 @@ export default function FeaturesPage() {
       <Navbar />
       <div className="pt-24 pb-12 max-w-4xl mx-auto px-6">
         <p className="text-xs font-medium text-emerald-400 tracking-widest uppercase mb-2">Product</p>
-        <h1 className="text-4xl font-bold tracking-tight mb-6">Features</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6">Features</h1>
         <p className="text-lg text-muted-foreground mb-12">
           Everything you need to go from idea to launch.
         </p>

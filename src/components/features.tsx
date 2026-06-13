@@ -18,9 +18,9 @@ export function Features() {
   ]
 
   return (
-    <section className="py-32 relative">
+    <section className="py-20 sm:py-32 relative">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 sm:mb-20">
           <p className="text-xs font-medium text-emerald-400 tracking-widest uppercase mb-4">{t.features_label}</p>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">{t.features_title}</h2>
           <p className="text-muted-foreground max-w-xl mx-auto text-lg">{t.features_desc}</p>

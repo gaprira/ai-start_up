@@ -32,10 +32,13 @@ export async function GET(req: Request) {
         },
       })
 
-      const parsedGenerations = generations.map(gen => ({
-        ...gen,
-        scores: JSON.parse(gen.scores),
-      }))
+      const parsedGenerations = generations.map(gen => {
+        try {
+          return { ...gen, scores: JSON.parse(gen.scores) }
+        } catch {
+          return { ...gen, scores: [] }
+        }
+      })
 
       return NextResponse.json(parsedGenerations)
     } catch {

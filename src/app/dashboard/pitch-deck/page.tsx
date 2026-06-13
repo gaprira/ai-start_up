@@ -31,12 +31,12 @@ interface Idea {
 
 function TitleSlide({ idea }: { idea: Idea }) {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-12">
+    <div className="flex flex-col items-center justify-center h-full text-center px-6 sm:px-12">
       <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-8 shadow-2xl shadow-emerald-500/30">
         <Presentation className="h-10 w-10 text-white" />
       </div>
-      <h1 className="text-5xl font-bold mb-4 tracking-tight">{idea.name}</h1>
-      <p className="text-2xl text-muted-foreground mb-6">{idea.pitch}</p>
+      <h1 className="text-3xl sm:text-5xl font-bold mb-4 tracking-tight">{idea.name}</h1>
+      <p className="text-lg sm:text-2xl text-muted-foreground mb-6">{idea.pitch}</p>
       <div className="flex gap-3">
         <Badge className="bg-emerald-500/20 text-emerald-400 text-sm px-4 py-1.5">Score: {idea.totalScore || '—'}/100</Badge>
         <Badge variant="outline" className="text-sm px-4 py-1.5">{idea.branding?.taglines?.[0] || ''}</Badge>
@@ -47,14 +47,14 @@ function TitleSlide({ idea }: { idea: Idea }) {
 
 function ProblemSlide({ idea }: { idea: Idea }) {
   return (
-    <div className="flex flex-col h-full px-12 py-10">
+    <div className="flex flex-col h-full px-6 sm:px-12 py-6 sm:py-10">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center">
           <Target className="h-6 w-6 text-red-400" />
         </div>
         <div>
           <p className="text-xs font-medium text-red-400 tracking-widest uppercase">The Problem</p>
-          <h2 className="text-3xl font-bold">What We Solve</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">What We Solve</h2>
         </div>
       </div>
       <div className="flex-1 flex flex-col justify-center">
@@ -71,20 +71,20 @@ function ProblemSlide({ idea }: { idea: Idea }) {
 function SolutionSlide({ idea }: { idea: Idea }) {
   const features = idea.mvp?.coreFeatures || []
   return (
-    <div className="flex flex-col h-full px-12 py-10">
+    <div className="flex flex-col h-full px-6 sm:px-12 py-6 sm:py-10">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
           <Lightbulb className="h-6 w-6 text-emerald-400" />
         </div>
         <div>
           <p className="text-xs font-medium text-emerald-400 tracking-widest uppercase">The Solution</p>
-          <h2 className="text-3xl font-bold">Our Approach</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">Our Approach</h2>
         </div>
       </div>
       <div className="flex-1 flex flex-col justify-center">
         <p className="text-xl text-muted-foreground leading-relaxed mb-8">{idea.pitch}</p>
         {features.length > 0 && (
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {features.slice(0, 3).map((feature, i) => (
               <div key={i} className="glass-card rounded-xl p-5 text-center">
                 <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 font-bold">
@@ -103,31 +103,31 @@ function SolutionSlide({ idea }: { idea: Idea }) {
 function MarketSlide({ idea }: { idea: Idea }) {
   const market = idea.market
   return (
-    <div className="flex flex-col h-full px-12 py-10">
+    <div className="flex flex-col h-full px-6 sm:px-12 py-6 sm:py-10">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
           <TrendingUp className="h-6 w-6 text-blue-400" />
         </div>
         <div>
           <p className="text-xs font-medium text-blue-400 tracking-widest uppercase">Market Opportunity</p>
-          <h2 className="text-3xl font-bold">Market Size</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">Market Size</h2>
         </div>
       </div>
       <div className="flex-1 flex flex-col justify-center">
         {market ? (
           <>
-            <div className="grid grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
               <div className="glass-card rounded-2xl p-6 text-center">
                 <p className="text-sm text-muted-foreground mb-2">Total Addressable Market</p>
-                <p className="text-4xl font-bold text-blue-400">{market.tam}</p>
+                <p className="text-2xl sm:text-4xl font-bold text-blue-400">{market.tam}</p>
               </div>
               <div className="glass-card rounded-2xl p-6 text-center">
                 <p className="text-sm text-muted-foreground mb-2">Serviceable Market</p>
-                <p className="text-4xl font-bold text-emerald-400">{market.sam}</p>
+                <p className="text-2xl sm:text-4xl font-bold text-emerald-400">{market.sam}</p>
               </div>
               <div className="glass-card rounded-2xl p-6 text-center">
                 <p className="text-sm text-muted-foreground mb-2">Obtainable Market</p>
-                <p className="text-4xl font-bold text-teal-400">{market.som}</p>
+                <p className="text-2xl sm:text-4xl font-bold text-teal-400">{market.som}</p>
               </div>
             </div>
           </>
@@ -149,21 +149,21 @@ function MarketSlide({ idea }: { idea: Idea }) {
 function BusinessSlide({ idea }: { idea: Idea }) {
   const bm = idea.businessModel
   return (
-    <div className="flex flex-col h-full px-12 py-10">
+    <div className="flex flex-col h-full px-6 sm:px-12 py-6 sm:py-10">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center">
           <DollarSign className="h-6 w-6 text-green-400" />
         </div>
         <div>
           <p className="text-xs font-medium text-green-400 tracking-widest uppercase">Business Model</p>
-          <h2 className="text-3xl font-bold">How We Make Money</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">How We Make Money</h2>
         </div>
       </div>
       <div className="flex-1 flex flex-col justify-center">
         {bm ? (
           <>
             <p className="text-lg text-muted-foreground mb-6">{bm.pricing}</p>
-            <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
               {bm.tiers.map((tier, i) => (
                 <div key={i} className={`glass-card rounded-xl p-5 ${i === 1 ? 'border-emerald-500/30 bg-emerald-500/5' : ''}`}>
                   <div className="flex items-center justify-between mb-3">
@@ -178,14 +178,14 @@ function BusinessSlide({ idea }: { idea: Idea }) {
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="glass-card rounded-xl p-4 text-center">
                 <p className="text-xs text-muted-foreground">Year 1 Revenue</p>
-                <p className="text-2xl font-bold text-green-400">{bm.year1Revenue}</p>
+                <p className="text-lg sm:text-2xl font-bold text-green-400">{bm.year1Revenue}</p>
               </div>
               <div className="glass-card rounded-xl p-4 text-center">
                 <p className="text-xs text-muted-foreground">Year 2 Revenue</p>
-                <p className="text-2xl font-bold text-green-400">{bm.year2Revenue}</p>
+                <p className="text-lg sm:text-2xl font-bold text-green-400">{bm.year2Revenue}</p>
               </div>
             </div>
           </>
@@ -203,20 +203,20 @@ function BusinessSlide({ idea }: { idea: Idea }) {
 function TractionSlide({ idea }: { idea: Idea }) {
   const mvp = idea.mvp
   return (
-    <div className="flex flex-col h-full px-12 py-10">
+    <div className="flex flex-col h-full px-6 sm:px-12 py-6 sm:py-10">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center">
           <Rocket className="h-6 w-6 text-purple-400" />
         </div>
         <div>
           <p className="text-xs font-medium text-purple-400 tracking-widest uppercase">Traction & MVP</p>
-          <h2 className="text-3xl font-bold">Product Roadmap</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">Product Roadmap</h2>
         </div>
       </div>
       <div className="flex-1 flex flex-col justify-center">
         {mvp ? (
           <>
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div className="glass-card rounded-xl p-5">
                 <p className="text-sm font-medium mb-2">Tech Stack</p>
                 <div className="flex flex-wrap gap-2">
@@ -227,7 +227,7 @@ function TractionSlide({ idea }: { idea: Idea }) {
               </div>
               <div className="glass-card rounded-xl p-5">
                 <p className="text-sm font-medium mb-2">Development Time</p>
-                <p className="text-2xl font-bold text-emerald-400">{mvp.devEstimate}</p>
+                <p className="text-lg sm:text-2xl font-bold text-emerald-400">{mvp.devEstimate}</p>
                 <p className="text-xs text-muted-foreground mt-1">Infra: {mvp.infrastructureCost}/mo</p>
               </div>
             </div>
@@ -254,14 +254,14 @@ function TractionSlide({ idea }: { idea: Idea }) {
 function TeamSlide({ idea }: { idea: Idea }) {
   const val = idea.validation
   return (
-    <div className="flex flex-col h-full px-12 py-10">
+    <div className="flex flex-col h-full px-6 sm:px-12 py-6 sm:py-10">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center">
           <Users className="h-6 w-6 text-orange-400" />
         </div>
         <div>
           <p className="text-xs font-medium text-orange-400 tracking-widest uppercase">Validation</p>
-          <h2 className="text-3xl font-bold">First Customers</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">First Customers</h2>
         </div>
       </div>
       <div className="flex-1 flex flex-col justify-center">
@@ -271,7 +271,7 @@ function TeamSlide({ idea }: { idea: Idea }) {
               <p className="text-sm font-medium mb-2">Finding Our First 10</p>
               <p className="text-muted-foreground">{val.firstCustomers}</p>
             </div>
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div className="glass-card rounded-xl p-5">
                 <p className="text-sm font-medium mb-3">Where to Find</p>
                 <div className="flex flex-wrap gap-2">
@@ -282,13 +282,13 @@ function TeamSlide({ idea }: { idea: Idea }) {
               </div>
               <div className="glass-card rounded-xl p-5">
                 <p className="text-sm font-medium mb-3">Landing Page</p>
-                <p className="text-sm text-muted-foreground italic">"{val.landingPageCopy}"</p>
+                <p className="text-sm text-muted-foreground italic">&ldquo;{val.landingPageCopy}&rdquo;</p>
               </div>
             </div>
             {val.outreachExamples[0] && (
               <div className="glass-card rounded-xl p-5">
                 <p className="text-sm font-medium mb-3">Outreach Template</p>
-                <p className="text-sm text-muted-foreground italic">"{val.outreachExamples[0]}"</p>
+                <p className="text-sm text-muted-foreground italic">&ldquo;{val.outreachExamples[0]}&rdquo;</p>
               </div>
             )}
           </>
@@ -305,23 +305,23 @@ function TeamSlide({ idea }: { idea: Idea }) {
 
 function AskSlide({ idea }: { idea: Idea }) {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-12">
+    <div className="flex flex-col items-center justify-center h-full text-center px-6 sm:px-12">
       <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-8 shadow-2xl shadow-emerald-500/30">
         <DollarSign className="h-10 w-10 text-white" />
       </div>
-      <h2 className="text-4xl font-bold mb-4">The Ask</h2>
-      <p className="text-xl text-muted-foreground mb-8">We're looking for partners who believe in this vision</p>
-      <div className="grid grid-cols-3 gap-6 mb-8">
+      <h2 className="text-2xl sm:text-4xl font-bold mb-4">The Ask</h2>
+      <p className="text-xl text-muted-foreground mb-8">We&apos;re looking for partners who believe in this vision</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
         <div className="glass-card rounded-2xl p-6">
-          <p className="text-3xl font-bold text-emerald-400">{idea.market?.tam || '—'}</p>
+          <p className="text-2xl sm:text-3xl font-bold text-emerald-400">{idea.market?.tam || '—'}</p>
           <p className="text-sm text-muted-foreground mt-2">Market Size</p>
         </div>
         <div className="glass-card rounded-2xl p-6">
-          <p className="text-3xl font-bold text-emerald-400">{idea.mvp?.devEstimate || '—'}</p>
+          <p className="text-2xl sm:text-3xl font-bold text-emerald-400">{idea.mvp?.devEstimate || '—'}</p>
           <p className="text-sm text-muted-foreground mt-2">To MVP</p>
         </div>
         <div className="glass-card rounded-2xl p-6">
-          <p className="text-3xl font-bold text-emerald-400">{idea.businessModel?.year1Revenue || '—'}</p>
+          <p className="text-2xl sm:text-3xl font-bold text-emerald-400">{idea.businessModel?.year1Revenue || '—'}</p>
           <p className="text-sm text-muted-foreground mt-2">Year 1 Revenue</p>
         </div>
       </div>
@@ -335,11 +335,11 @@ function AskSlide({ idea }: { idea: Idea }) {
 
 function LockedSlide() {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-12">
+    <div className="flex flex-col items-center justify-center h-full text-center px-6 sm:px-12">
       <div className="w-20 h-20 rounded-3xl bg-yellow-500/10 flex items-center justify-center mb-6">
         <Lock className="h-10 w-10 text-yellow-400" />
       </div>
-      <h2 className="text-3xl font-bold mb-3">Pitch Deck Generator</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold mb-3">Pitch Deck Generator</h2>
       <p className="text-lg text-muted-foreground mb-6">This feature requires the Founder plan</p>
       <Link href="/dashboard/billing">
         <Button className="btn-gradient text-white px-8 py-6 text-lg rounded-2xl">
@@ -449,7 +449,7 @@ function PitchDeckContent() {
             Back to Results
           </Link>
           <p className="text-xs font-medium text-emerald-400 tracking-widest uppercase mb-1">Pitch Deck</p>
-          <h1 className="text-3xl font-bold tracking-tight">{idea?.name || 'Pitch Deck'}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{idea?.name || 'Pitch Deck'}</h1>
         </div>
         {hasAccess && slides.length > 0 && (
           <div className="flex items-center gap-2">
@@ -495,12 +495,12 @@ function PitchDeckContent() {
               </button>
             ))}
           </div>
-          <div className="h-[600px] bg-gradient-to-br from-background via-background to-emerald-500/5">
+          <div className="h-[400px] sm:h-[600px] bg-gradient-to-br from-background via-background to-emerald-500/5">
             {slides[currentSlide]?.content}
           </div>
         </div>
       ) : (
-        <div className="glass-card rounded-2xl h-[600px]">
+        <div className="glass-card rounded-2xl h-[400px] sm:h-[600px]">
           <LockedSlide />
         </div>
       )}

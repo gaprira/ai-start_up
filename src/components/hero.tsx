@@ -25,7 +25,7 @@ export function Hero() {
           </span>
         </div>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-[1.05] tracking-tight animate-fade-in-up animate-delay-100">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.05] tracking-tight animate-fade-in-up animate-delay-100">
           {t.hero_title_1}{' '}
           <span className="gradient-text">{t.hero_title_2}</span>
         </h1>
@@ -34,7 +34,7 @@ export function Hero() {
           {t.hero_desc}
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20 animate-fade-in-up animate-delay-300">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 sm:mb-20 animate-fade-in-up animate-delay-300">
           <Link href="/sign-up">
             <Button size="lg" className="btn-gradient text-white h-12 px-8 text-base font-semibold rounded-xl group">
               {t.hero_cta}

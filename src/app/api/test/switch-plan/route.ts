@@ -5,6 +5,10 @@ import { getAuth } from '@clerk/nextjs/server'
 import { getDb } from '@/lib/prisma'
 
 export async function POST(req: Request) {
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json({ error: 'Not available in production' }, { status: 404 })
+  }
+
   try {
     const { userId } = getAuth(req as any)
 
@@ -40,7 +44,7 @@ export async function POST(req: Request) {
 
       return NextResponse.json({ plan: user.plan })
     } catch {
-      return NextResponse.json({ plan })
+      return NextResponse.json({ error: 'Failed to switch plan' }, { status: 500 })
     }
   } catch (error) {
     return NextResponse.json({ error: 'Failed to switch plan' }, { status: 500 })

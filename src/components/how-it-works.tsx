@@ -14,10 +14,10 @@ export function HowItWorks() {
   ]
 
   return (
-    <section id="how-it-works" className="py-32 relative">
+    <section id="how-it-works" className="py-20 sm:py-32 relative">
       <div className="divider-glow absolute top-0 left-0 right-0" />
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 sm:mb-20">
           <p className="text-xs font-medium text-emerald-400 tracking-widest uppercase mb-4">{t.how_label}</p>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">{t.how_title}</h2>
           <p className="text-muted-foreground max-w-xl mx-auto text-lg">{t.how_desc}</p>

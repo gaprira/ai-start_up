@@ -5,6 +5,10 @@ import { getAuth } from '@clerk/nextjs/server'
 import { getDb } from '@/lib/prisma'
 
 export async function GET(req: Request) {
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json({ plan: 'FREE' })
+  }
+
   try {
     const { userId } = getAuth(req as any)
     const testerHeader = req.headers.get('x-tester-mode')

@@ -5,6 +5,7 @@ import { getAuth } from '@clerk/nextjs/server'
 import { getOpenAI, GENERATION_PROMPT, AI_MODEL } from '@/lib/openai'
 import { getDb } from '@/lib/prisma'
 import { PLAN_FEATURES } from '@/lib/stripe'
+import { startupInputSchema } from '@/lib/validators'
 
 function generateMockIdeas(interests: string, skills: string, industry: string, budget: string, audience: string) {
   const interestList = interests.split(',').map(s => s.trim()).filter(Boolean)
@@ -205,8 +206,9 @@ export async function POST(req: Request) {
   try {
     const { userId } = getAuth(req as any)
     const testerHeader = req.headers.get('x-tester-mode')
-    const effectiveUserId = userId || (testerHeader ? 'tester-user' : null)
-    
+    const isDevMode = process.env.NODE_ENV !== 'production'
+    const effectiveUserId = userId || (testerHeader && isDevMode ? 'tester-user' : null)
+
     if (!effectiveUserId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -215,14 +217,17 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    const { interests, skills, industry, budget, audience } = body
+    const parsed = startupInputSchema.safeParse(body)
 
-    if (!interests || !skills || !industry || !budget || !audience) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: parsed.error.errors[0]?.message || 'Missing required fields' },
         { status: 400 }
       )
     }
+
+    const { interests, skills, industry, budget, audience, lang: parsedLang } = parsed.data
+    const lang = (parsedLang || body.lang === 'ru' ? 'ru' : 'en') as 'en' | 'ru'
 
     let user: any = null
     let dbAvailable = true
@@ -242,7 +247,7 @@ export async function POST(req: Request) {
     } catch (dbError) {
       console.error('DB unavailable, continuing without persistence:', (dbError as Error).message)
       dbAvailable = false
-      user = { id: 'local-' + userId, plan: 'FOUNDER' }
+      user = { id: 'local-' + userId, plan: 'FREE' }
     }
 
     let ideasData: any
@@ -256,12 +261,16 @@ export async function POST(req: Request) {
           .replace('{budget}', budget)
           .replace('{audience}', audience)
 
+        const langInstruction = lang === 'ru'
+          ? 'IMPORTANT: Generate ALL text content in Russian language. The user interface is in Russian. All field values (problem, pitch, whyNow, targetAudience, gaps, advantage, firstCustomers, outreachExamples, landingPageCopy, week descriptions, pricing, etc.) MUST be written in Russian. Keep brand names, company names, tech stack names, domain names, and competitor names in their original language. JSON keys must remain in English.'
+          : 'Generate all content in English.'
+
         const completion = await getOpenAI().chat.completions.create({
           model: AI_MODEL,
           messages: [
             {
               role: 'system',
-              content: 'You are an expert startup advisor. Always respond with valid JSON only.',
+              content: `You are an expert startup advisor. Always respond with valid JSON only. ${langInstruction}`,
             },
             {
               role: 'user',
@@ -331,33 +340,21 @@ export async function POST(req: Request) {
     const features = PLAN_FEATURES[planKey] || PLAN_FEATURES.FREE
 
     const filteredIdeas = ideasWithScores.slice(0, features.ideasCount).map((idea: any) => {
-      const filtered: any = {
+      return {
         name: idea.name,
         pitch: idea.pitch,
         problem: idea.problem,
         whyNow: idea.whyNow,
         targetAudience: idea.targetAudience,
+        market: idea.market,
+        businessModel: idea.businessModel,
+        mvp: idea.mvp,
+        validation: idea.validation,
+        branding: idea.branding,
+        launchPlan: idea.launchPlan,
+        scores: idea.scores,
+        totalScore: idea.totalScore,
       }
-
-      if (features.showMarket) filtered.market = idea.market
-      if (features.showBusinessModel) filtered.businessModel = idea.businessModel
-      if (features.showMvp) filtered.mvp = idea.mvp
-      if (features.showValidation) filtered.validation = idea.validation
-      if (features.showBranding) filtered.branding = idea.branding
-      if (features.showLaunchPlan) filtered.launchPlan = idea.launchPlan
-
-      if (features.showDetailedScores) {
-        filtered.scores = idea.scores
-        filtered.totalScore = idea.totalScore
-      } else {
-        const scoreKeys = Object.keys(idea.scores).slice(0, features.maxScoreCategories)
-        const limitedScores: any = {}
-        scoreKeys.forEach((key: string) => { limitedScores[key] = idea.scores[key] })
-        filtered.scores = limitedScores
-        filtered.totalScore = idea.totalScore
-      }
-
-      return filtered
     })
 
     const genId = 'gen-' + Date.now()

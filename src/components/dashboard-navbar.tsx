@@ -1,13 +1,15 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { useUser, UserButton } from '@clerk/nextjs'
-import { Sparkles, Globe } from 'lucide-react'
+import { Sparkles, Globe, Menu, X } from 'lucide-react'
 import { useLang } from '@/lib/i18n'
 
 export function DashboardNavbar() {
   const { isSignedIn } = useUser()
   const { t, toggle, lang } = useLang()
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
     <nav className="fixed top-0 z-50 w-full bg-background/80 backdrop-blur-xl border-b border-white/5">
@@ -39,7 +41,40 @@ export function DashboardNavbar() {
           <div className="w-px h-6 bg-white/10" />
           {isSignedIn && <UserButton afterSignOutUrl="/" />}
         </div>
+
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-white/5 transition-colors text-muted-foreground hover:text-foreground"
+        >
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
+
+      {mobileOpen && (
+        <div className="md:hidden border-t border-white/5 bg-background/95 backdrop-blur-xl">
+          <div className="px-6 py-4 space-y-2">
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileOpen(false)}
+              className="block px-4 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-emerald-500/10 transition-colors"
+            >
+              {t.nav_dashboard}
+            </Link>
+            <button
+              onClick={() => { toggle(); setMobileOpen(false) }}
+              className="flex items-center gap-2 w-full px-4 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-emerald-500/10 transition-colors"
+            >
+              <Globe className="h-4 w-4" />
+              {lang === 'en' ? 'RU' : 'EN'}
+            </button>
+            {isSignedIn && (
+              <div className="px-4 py-2">
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

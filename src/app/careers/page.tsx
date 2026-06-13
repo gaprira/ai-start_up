@@ -7,7 +7,7 @@ export default function CareersPage() {
       <Navbar />
       <div className="pt-24 pb-12 max-w-4xl mx-auto px-6">
         <p className="text-xs font-medium text-emerald-400 tracking-widest uppercase mb-2">Company</p>
-        <h1 className="text-4xl font-bold tracking-tight mb-6">Careers</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6">Careers</h1>
         <p className="text-lg text-muted-foreground mb-12">
           We&apos;re hiring! Join us in building the future of entrepreneurship.
         </p>
@@ -17,7 +17,7 @@ export default function CareersPage() {
             { title: 'AI/ML Engineer', type: 'Remote', desc: 'Improve our AI generation pipeline and prompt engineering.' },
             { title: 'Designer', type: 'Remote', desc: 'Craft beautiful, intuitive experiences for our users.' },
           ].map((job, i) => (
-            <div key={i} className="glass-card rounded-2xl p-6 flex items-center justify-between">
+            <div key={i} className="glass-card rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h3 className="font-semibold mb-1">{job.title}</h3>
                 <p className="text-sm text-muted-foreground">{job.desc}</p>

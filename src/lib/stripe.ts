@@ -56,7 +56,7 @@ export const PLANS = {
 
 export const PLAN_FEATURES = {
   FREE: {
-    ideasCount: 1,
+    ideasCount: 3,
     showMarket: false,
     showBusinessModel: false,
     showMvp: false,

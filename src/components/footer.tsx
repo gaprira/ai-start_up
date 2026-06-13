@@ -9,8 +9,8 @@ export function Footer() {
 
   return (
     <footer className="border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+      <div className="max-w-7xl mx-auto px-6 py-10 sm:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 mb-4">
               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500">

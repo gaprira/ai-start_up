@@ -16,10 +16,10 @@ export function Pricing() {
   ]
 
   return (
-    <section id="pricing" className="py-32 relative">
+    <section id="pricing" className="py-20 sm:py-32 relative">
       <div className="divider-glow absolute top-0 left-0 right-0" />
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 sm:mb-20">
           <p className="text-xs font-medium text-emerald-400 tracking-widest uppercase mb-4">{t.pricing_label}</p>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">{t.pricing_title}</h2>
           <p className="text-muted-foreground max-w-xl mx-auto text-lg">{t.pricing_desc}</p>
@@ -33,10 +33,10 @@ export function Pricing() {
                   <Badge className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 px-3 py-1">{t.pricing_popular}</Badge>
                 </div>
               )}
-              <div className={`rounded-2xl p-8 h-full ${plan.popular ? 'bg-card' : 'glass-card'}`}>
+              <div className={`rounded-2xl p-6 sm:p-8 h-full ${plan.popular ? 'bg-card' : 'glass-card'}`}>
                 <h3 className="text-lg font-semibold mb-2">{plan.name}</h3>
                 <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-4xl font-bold">{plan.price}</span>
+                  <span className="text-3xl sm:text-4xl font-bold">{plan.price}</span>
                   {plan.period && <span className="text-muted-foreground">{plan.period}</span>}
                 </div>
                 <p className="text-sm text-muted-foreground mb-8">{plan.description}</p>

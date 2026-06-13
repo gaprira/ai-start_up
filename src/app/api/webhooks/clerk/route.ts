@@ -50,12 +50,18 @@ export async function POST(req: Request) {
       case 'user.created': {
         const { id, email_addresses, first_name, last_name, image_url } = data
         
-        await (await getDb()).user.create({
-          data: {
+        await (await getDb()).user.upsert({
+          where: { clerkId: id },
+          create: {
             clerkId: id,
             email: email_addresses[0]?.email_address || '',
             name: [first_name, last_name].filter(Boolean).join(' ') || null,
             avatar: image_url || null,
+          },
+          update: {
+            email: email_addresses[0]?.email_address || undefined,
+            name: [first_name, last_name].filter(Boolean).join(' ') || undefined,
+            avatar: image_url || undefined,
           },
         })
         break
@@ -77,10 +83,13 @@ export async function POST(req: Request) {
 
       case 'user.deleted': {
         const { id } = data
-        
-        await (await getDb()).user.delete({
-          where: { clerkId: id },
-        })
+        const db = await getDb()
+        const user = await db.user.findUnique({ where: { clerkId: id }, select: { id: true } })
+        if (user) {
+          await db.generation.deleteMany({ where: { userId: user.id } })
+          await db.subscription.deleteMany({ where: { userId: user.id } })
+          await db.user.delete({ where: { clerkId: id } })
+        }
         break
       }
     }

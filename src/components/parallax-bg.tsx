@@ -44,7 +44,7 @@ export function ParallaxBackground() {
         data-speed="-0.06"
         className="absolute rounded-full"
         style={{
-          width: '900px', height: '900px',
+          width: 'min(900px, 100vw)', height: 'min(900px, 100vw)',
           left: '-200px', top: '-300px',
           background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 60%)',
           filter: 'blur(70px)',
@@ -55,7 +55,7 @@ export function ParallaxBackground() {
         data-speed="-0.04"
         className="absolute rounded-full"
         style={{
-          width: '700px', height: '700px',
+          width: 'min(700px, 100vw)', height: 'min(700px, 100vw)',
           right: '-200px', top: '30%',
           background: 'radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 60%)',
           filter: 'blur(60px)',
@@ -66,7 +66,7 @@ export function ParallaxBackground() {
         data-speed="-0.1"
         className="absolute rounded-full"
         style={{
-          width: '500px', height: '500px',
+          width: 'min(500px, 100vw)', height: 'min(500px, 100vw)',
           left: '10%', top: '65%',
           background: 'radial-gradient(circle, rgba(52,211,153,0.07) 0%, transparent 60%)',
           filter: 'blur(50px)',

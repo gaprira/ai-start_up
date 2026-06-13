@@ -281,8 +281,8 @@
 }
 
 .hero-orb-1 {
-  width: 500px;
-  height: 500px;
+  width: min(500px, 80vw);
+  height: min(500px, 80vw);
   background: radial-gradient(circle, hsla(160, 84%, 39%, 0.3), transparent 70%);
   top: 10%;
   left: 15%;
@@ -290,8 +290,8 @@
 }
 
 .hero-orb-2 {
-  width: 400px;
-  height: 400px;
+  width: min(400px, 70vw);
+  height: min(400px, 70vw);
   background: radial-gradient(circle, hsla(174, 83%, 40%, 0.25), transparent 70%);
   bottom: 20%;
   right: 10%;
@@ -300,8 +300,8 @@
 }
 
 .hero-orb-3 {
-  width: 300px;
-  height: 300px;
+  width: min(300px, 60vw);
+  height: min(300px, 60vw);
   background: radial-gradient(circle, hsla(189, 83%, 40%, 0.2), transparent 70%);
   top: 50%;
   left: 50%;
@@ -312,7 +312,7 @@
 
 /* ─── Number Counter ─── */
 .step-number {
-  font-size: 4rem;
+  font-size: clamp(2.5rem, 10vw, 4rem);
   font-weight: 800;
   line-height: 1;
   background: linear-gradient(180deg, hsla(160, 84%, 39%, 0.15), transparent);
